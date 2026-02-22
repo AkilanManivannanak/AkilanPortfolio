@@ -1,0 +1,112 @@
+[
+  {
+    "name": "search",
+    "path": "/search",
+    "component": "/Users/akilan/Downloads/AkilanPortfolio/src/pages/search.vue",
+    "chunkName": "pages/search",
+    "url": "/search",
+    "_name": "_6aad1960"
+  },
+  {
+    "path": "/watch",
+    "component": "/Users/akilan/Downloads/AkilanPortfolio/src/pages/watch.vue",
+    "chunkName": "pages/watch",
+    "children": [
+      {
+        "name": "watch",
+        "path": "",
+        "component": "/Users/akilan/Downloads/AkilanPortfolio/src/pages/watch/index.vue",
+        "chunkName": "pages/watch/index",
+        "url": "/watch",
+        "_name": "_5152b01a"
+      },
+      {
+        "name": "watch-id",
+        "path": ":id",
+        "component": "/Users/akilan/Downloads/AkilanPortfolio/src/pages/watch/_id.vue",
+        "chunkName": "pages/watch/_id",
+        "_name": "_2221f102"
+      }
+    ],
+    "_name": "_416ee6d7"
+  },
+  {
+    "path": "/",
+    "component": "/Users/akilan/Downloads/AkilanPortfolio/src/pages/index.vue",
+    "chunkName": "pages/index",
+    "children": [
+      {
+        "name": "index",
+        "path": "",
+        "component": "/Users/akilan/Downloads/AkilanPortfolio/src/pages/index/index.vue",
+        "chunkName": "pages/index/index",
+        "url": "/",
+        "_name": "_55142c5d"
+      },
+      {
+        "name": "index-about",
+        "path": "about",
+        "component": "/Users/akilan/Downloads/AkilanPortfolio/src/pages/index/about.vue",
+        "chunkName": "pages/index/about",
+        "url": "//about",
+        "_name": "_355c5198"
+      },
+      {
+        "name": "index-achievements",
+        "path": "achievements",
+        "component": "/Users/akilan/Downloads/AkilanPortfolio/src/pages/index/achievements.vue",
+        "chunkName": "pages/index/achievements",
+        "url": "//achievements",
+        "_name": "_4fe04669"
+      },
+      {
+        "name": "index-certificates",
+        "path": "certificates",
+        "component": "/Users/akilan/Downloads/AkilanPortfolio/src/pages/index/certificates.vue",
+        "chunkName": "pages/index/certificates",
+        "url": "//certificates",
+        "_name": "_3442d501"
+      },
+      {
+        "name": "index-education",
+        "path": "education",
+        "component": "/Users/akilan/Downloads/AkilanPortfolio/src/pages/index/education.vue",
+        "chunkName": "pages/index/education",
+        "url": "//education",
+        "_name": "_6bf0deb3"
+      },
+      {
+        "name": "index-experience",
+        "path": "experience",
+        "component": "/Users/akilan/Downloads/AkilanPortfolio/src/pages/index/experience.vue",
+        "chunkName": "pages/index/experience",
+        "url": "//experience",
+        "_name": "_a5430622"
+      },
+      {
+        "name": "index-projects",
+        "path": "projects",
+        "component": "/Users/akilan/Downloads/AkilanPortfolio/src/pages/index/projects.vue",
+        "chunkName": "pages/index/projects",
+        "url": "//projects",
+        "_name": "_424c6982"
+      },
+      {
+        "name": "index-skills",
+        "path": "skills",
+        "component": "/Users/akilan/Downloads/AkilanPortfolio/src/pages/index/skills.vue",
+        "chunkName": "pages/index/skills",
+        "url": "//skills",
+        "_name": "_f7351372"
+      }
+    ],
+    "_name": "_2207915a"
+  },
+  {
+    "name": "all",
+    "path": "/*",
+    "component": "/Users/akilan/Downloads/AkilanPortfolio/src/pages/_.vue",
+    "chunkName": "pages/_",
+    "_name": "_cf0e5b32"
+  }
+]

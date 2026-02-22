@@ -1,0 +1,28 @@
+*.--FullScreen {
+  height: calc(100vh - var(--headerHeight));
+}
+
+*.--Scrollable {
+  &:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 25px;
+    z-index: 2;
+
+    background: linear-gradient(to top, var(--bg1), rgba(255, 255, 255, 0));
+  }
+}
+
+*.--FullScreen-ext {
+  height: 100vh;
+}
+
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}

@@ -1,0 +1,132 @@
+@import './colors.css';
+@import './transitions.css';
+@import './animations.css';
+@import './global.css';
+
+:root {
+  --headerHeight: 70px;
+  --navWidth: 230px;
+}
+
+html {
+  height: 100%;
+  width: 100%;
+  background-color: var(--bg1);
+  font-size: 16px;
+
+  @screen md {
+    font-size: 14px;
+  }
+}
+
+body {
+  width: 100%;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+  margin: 0;
+  line-height: 1.5;
+  color: var(--text1);
+}
+
+html.dark {
+  --bg1: var(--g0);
+  --bg2: var(--g10);
+  --bg3: var(--g20);
+  --bg4: var(--g30);
+  --bg5: var(--g40);
+  --bg6: var(--g50);
+  --bg7: var(--g70);
+  --bg8: var(--g90);
+  --bg9: var(--w110);
+  --bg10: var(--w130);
+  --bg11: var(--w150);
+  --bg12: var(--w170);
+  --text1: white;
+  --text2: var(--w250);
+  --text3: var(--w245);
+  --text4: var(--w240);
+  --text5: var(--w230);
+  --text6: var(--w220);
+  --text7: var(--w210);
+  --text8: var(--w200);
+  --text9: var(--w190);
+  --text10: var(--w170);
+  --text11: var(--w160);
+  --text12: var(--w150);
+  --textLink: var(--rose);
+  --shadowColor: rgba(200, 200, 200, 0.2);
+  color-scheme: dark;
+}
+
+html.light {
+  --bg1: white;
+  --bg2: var(--w250);
+  --bg3: var(--w245);
+  --bg4: var(--w240);
+  --bg5: var(--w235);
+  --bg6: var(--w225);
+  --bg7: var(--w210);
+  --bg8: var(--w200);
+  --bg9: var(--w190);
+  --bg10: var(--w170);
+  --bg11: var(--w160);
+  --bg12: var(--w150);
+  --text1: var(--g10);
+  --text2: var(--g20);
+  --text3: var(--g30);
+  --text4: var(--g40);
+  --text5: var(--g50);
+  --text6: var(--g60);
+  --text7: var(--g80);
+  --text8: var(--g90);
+  --text9: var(--w100);
+  --text10: var(--w110);
+  --text11: var(--w120);
+  --text12: var(--w130);
+  --textLink: var(--mint);
+  --shadowColor: rgba(149, 157, 165, 0.2);
+  color-scheme: light;
+}
+
+@screen md {
+  :root {
+    --headerHeight: 60px !important;
+  }
+}
+
+*,
+*:after,
+*:before {
+  box-sizing: border-box;
+  outline: none !important;
+}
+
+input,
+select,
+textarea,
+button {
+  color: var(--text1);
+  text-align: left;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+ul {
+  list-style-type: disc;
+}
+
+ul[list] {
+  padding: 0;
+  list-style: none;
+  list-style-type: none;
+  li {
+    list-style: none;
+    list-style-type: none;
+  }
+}

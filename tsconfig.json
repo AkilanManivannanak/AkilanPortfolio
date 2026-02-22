@@ -1,0 +1,114 @@
+{
+  "compilerOptions": {
+    "target": "ES2019",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "lib": [
+      "esnext",
+      "dom",
+      "es2017",
+      "es2017.object",
+      "webworker",
+      "webworker.importscripts"
+    ],
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": false,
+    "noImplicitAny": true,
+    "noUnusedLocals": false,
+    "pretty": true,
+    "sourceMap": true,
+    "importHelpers": true,
+    "noUnusedParameters": false,
+    "jsx": "preserve",
+    "downlevelIteration": false,
+    "skipLibCheck": true,
+    "noUncheckedIndexedAccess": false,
+    "noImplicitThis": true,
+    "strict": true,
+    "allowJs": true,
+    "noEmit": true,
+    "checkJs": false,
+    "baseUrl": "./src/",
+    "resolveJsonModule": true,
+    "paths": {
+      "@components": [
+        "components/index.ts"
+      ],
+      "@components/*": [
+        "components/*"
+      ],
+      "@global": [
+        "components/Global/index.ts"
+      ],
+      "@store": [
+        "vuex-modules/index.ts"
+      ],
+      "@middleware": [
+        "middleware/index.ts"
+      ],
+      "@services": [
+        "services/index.ts"
+      ],
+      "@assets/*": [
+        "assets/*"
+      ],
+      "@images/*": [
+        "assets/images/*"
+      ],
+      "@icons/*": [
+        "assets/icons/*"
+      ],
+      "@constructors": [
+        "constructors/index.ts"
+      ],
+      "@decorators": [
+        "decorators/index.ts"
+      ],
+      "@mixins": [
+        "mixins/index.ts"
+      ],
+      "@colors": [
+        "styles/colors.module.js"
+      ],
+      "@utils": [
+        "utils/index.ts"
+      ],
+      "@constants": [
+        "constants/index.ts"
+      ],
+      "@data": [
+        "data/index.ts"
+      ],
+      "@models": [
+        "models/index.ts"
+      ],
+      "@locales": [
+        "locales/index.ts"
+      ]
+    },
+    "types": [
+      "@nuxt/types",
+      "nuxt-typed-router",
+      "node",
+      "webpack-env",
+      "nuxt-i18n",
+      "@nuxtjs/google-analytics"
+    ]
+  },
+  "include": [
+    "./src/**/*.ts",
+    "__tests__/**/*.ts",
+    "./src/**/*.js",
+    "./src/**/*.vue",
+    "./config/**/*.ts"
+  ],
+  "files": [
+    "nuxt.config.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    ".nuxt"
+  ]
+}

@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AkilanFlix — Portfolio Assistant</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #E50914;
+    --red-dark: #B20710;
+    --red-glow: rgba(229,9,20,0.3);
+    --black: #000000;
+    --dark3: #222222;
+    --gray: #808080;
+    --light-gray: #b3b3b3;
+    --white: #ffffff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(180deg, rgba(0,0,0,0.97) 0%, transparent 100%);
+    padding: 14px 28px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-shrink: 0;
+    border-bottom: 1px solid rgba(229,9,20,0.2);
+    z-index: 10;
+  }
+
+  .brand {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 28px;
+    letter-spacing: 1px;
+    line-height: 1;
+    display: flex;
+    align-items: baseline;
+    gap: 0px;
+  }
+  .brand-akilan { color: var(--white); }
+  .brand-flix   { color: var(--red); text-shadow: 0 0 20px var(--red-glow); }
+
+  .header-divider { width: 2px; height: 26px; background: rgba(229,9,20,0.4); }
+
+  .header-info h1 { font-size: 13px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; }
+  .header-info p  { font-size: 11px; color: var(--light-gray); letter-spacing: 0.4px; margin-top: 2px; }
+
+  .status {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12px;
+    color: #46d369;
+    font-weight: 500;
+  }
+  .status-dot {
+    width: 8px; height: 8px;
+    background: #46d369;
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity:1; } 50% { opacity:0.35; }
+  }
+
+  /* ── CHAT AREA ── */
+  .chat-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+  }
+  .chat-wrapper::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 50% 40% at 15% 85%, rgba(229,9,20,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 50% at 85% 15%, rgba(229,9,20,0.04) 0%, transparent 60%),
+      #0a0a0a;
+    pointer-events: none;
+  }
+
+  .messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 22px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    position: relative;
+    z-index: 1;
+    scroll-behavior: smooth;
+  }
+  .messages::-webkit-scrollbar { width: 3px; }
+  .messages::-webkit-scrollbar-thumb { background: var(--red); border-radius: 4px; }
+
+  /* ── MESSAGES ── */
+  .msg {
+    display: flex;
+    gap: 11px;
+    animation: fadeUp 0.3s ease forwards;
+    max-width: 860px;
+  }
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(10px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  .msg.user { flex-direction: row-reverse; align-self: flex-end; }
+  .msg.bot  { align-self: flex-start; }
+
+  .avatar {
+    width: 34px; height: 34px;
+    border-radius: 4px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+  }
+  .av-bot  { background: var(--red); font-family: 'Bebas Neue', cursive; font-size: 15px; box-shadow: 0 0 12px var(--red-glow); }
+  .av-user { background: #2e2e2e; color: var(--gray); font-size: 9px; letter-spacing: 0.5px; }
+
+  .bubble {
+    padding: 12px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 1.65;
+    max-width: 660px;
+  }
+  .bubble.bot  { background: var(--dark3); border-left: 3px solid var(--red); }
+  .bubble.user { background: #252525; border-right: 3px solid #3a3a3a; color: var(--light-gray); }
+  .bubble strong { color: var(--red); }
+  .bubble a { color: var(--red); text-decoration: none; border-bottom: 1px solid rgba(229,9,20,0.3); }
+  .bubble a:hover { border-bottom-color: var(--red); }
+  .bubble ul { margin: 6px 0 0 16px; }
+  .bubble li { margin-bottom: 3px; }
+
+  /* ── VOICE BUTTON ── */
+  .voice-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 8px;
+    background: transparent;
+    border: 1px solid rgba(229,9,20,0.35);
+    color: var(--light-gray);
+    font-size: 11px;
+    font-family: 'Inter', sans-serif;
+    padding: 4px 10px;
+    border-radius: 2px;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: all 0.2s;
+  }
+  .voice-btn:hover { background: rgba(229,9,20,0.12); color: white; border-color: var(--red); }
+  .voice-btn.speaking {
+    background: rgba(229,9,20,0.15);
+    border-color: var(--red);
+    color: var(--red);
+  }
+  .voice-btn svg { width: 12px; height: 12px; fill: currentColor; flex-shrink: 0; }
+
+  /* waveform bars shown while speaking */
+  .wave-bars {
+    display: none;
+    align-items: center;
+    gap: 2px;
+    height: 12px;
+  }
+  .voice-btn.speaking .wave-bars { display: flex; }
+  .voice-btn.speaking .voice-icon { display: none; }
+  .wave-bar {
+    width: 2px;
+    background: var(--red);
+    border-radius: 2px;
+    animation: waveAnim 0.6s ease-in-out infinite alternate;
+  }
+  .wave-bar:nth-child(1) { height: 4px;  animation-delay: 0s;    }
+  .wave-bar:nth-child(2) { height: 9px;  animation-delay: 0.1s;  }
+  .wave-bar:nth-child(3) { height: 12px; animation-delay: 0.2s;  }
+  .wave-bar:nth-child(4) { height: 7px;  animation-delay: 0.3s;  }
+  .wave-bar:nth-child(5) { height: 4px;  animation-delay: 0.4s;  }
+  @keyframes waveAnim {
+    from { transform: scaleY(0.4); opacity: 0.6; }
+    to   { transform: scaleY(1);   opacity: 1;   }
+  }
+
+  /* chips */
+  .suggestions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 11px; }
+  .chip {
+    background: transparent;
+    border: 1px solid rgba(229,9,20,0.45);
+    color: var(--light-gray);
+    padding: 6px 14px;
+    border-radius: 2px;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.2s;
+    letter-spacing: 0.4px;
+  }
+  .chip:hover {
+    background: var(--red);
+    color: white;
+    border-color: var(--red);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px var(--red-glow);
+  }
+
+  /* typing */
+  .typing-wrap { display: flex; gap: 11px; align-self: flex-start; animation: fadeUp 0.3s ease; }
+  .typing-bubble {
+    background: var(--dark3);
+    border-left: 3px solid var(--red);
+    border-radius: 4px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .td { width:6px; height:6px; background:var(--red); border-radius:50%; animation: bounce 1.2s ease-in-out infinite; }
+  .td:nth-child(2) { animation-delay: 0.15s; }
+  .td:nth-child(3) { animation-delay: 0.30s; }
+  @keyframes bounce {
+    0%,60%,100% { transform:translateY(0); opacity:0.4; }
+    30%          { transform:translateY(-5px); opacity:1; }
+  }
+
+  /* ── INPUT ── */
+  .input-area {
+    padding: 12px 28px 18px;
+    position: relative;
+    z-index: 2;
+    background: linear-gradient(0deg, rgba(0,0,0,1) 0%, transparent 100%);
+  }
+  .input-bar {
+    display: flex;
+    align-items: center;
+    background: var(--dark3);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 4px;
+    padding: 4px 4px 4px 16px;
+    gap: 10px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .input-bar:focus-within {
+    border-color: var(--red);
+    box-shadow: 0 0 0 2px rgba(229,9,20,0.12);
+  }
+  .input-bar input {
+    flex:1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    padding: 10px 0;
+  }
+  .input-bar input::placeholder { color: var(--gray); }
+
+  .send-btn {
+    width:40px; height:40px;
+    background: var(--red);
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+  .send-btn:hover { background: var(--red-dark); transform: scale(1.06); }
+  .send-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .send-btn svg { width:16px; height:16px; fill:white; }
+
+  .footer-text {
+    text-align: center;
+    font-size: 11px;
+    color: #444;
+    margin-top: 8px;
+    letter-spacing: 0.6px;
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+  .footer-text span { color: rgba(229,9,20,0.6); }
+
+  /* ── INTRO CARD ── */
+  .intro-card {
+    background: linear-gradient(135deg, #180000 0%, #0d0d0d 100%);
+    border: 1px solid rgba(229,9,20,0.25);
+    border-radius: 6px;
+    padding: 20px 22px 14px;
+  }
+  .hero-name { font-family:'Bebas Neue',cursive; font-size:30px; letter-spacing:3px; line-height:1; }
+  .hero-name span { color: var(--red); }
+  .hero-role { font-size:11px; color:var(--light-gray); margin-top:5px; letter-spacing:1.2px; text-transform:uppercase; }
+  .tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
+  .tag {
+    background: rgba(229,9,20,0.12);
+    border: 1px solid rgba(229,9,20,0.28);
+    color: var(--light-gray);
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 2px;
+    letter-spacing: 0.4px;
+  }
+  .links-row { display:flex; gap:10px; margin-top:14px; }
+  .lp {
+    display:flex; align-items:center; gap:6px;
+    color:var(--light-gray); font-size:12px; text-decoration:none;
+    border:1px solid #333; padding:5px 12px; border-radius:2px;
+    transition:all 0.2s;
+  }
+  .lp:hover { border-color:var(--red); color:white; }
+  .lp svg { width:13px; height:13px; fill:currentColor; }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="brand">
+    <span class="brand-akilan">Akilan</span><span class="brand-flix">Flix</span>
+  </div>
+  <div class="header-divider"></div>
+  <div class="header-info">
+    <h1>Portfolio AI</h1>
+    <p>AI Researcher · ML Engineer · MS in AI @ LIU Brooklyn</p>
+  </div>
+  <div class="status"><div class="status-dot"></div>Live</div>
+</header>
+
+<div class="chat-wrapper">
+  <div class="messages" id="messages">
+    <div class="msg bot">
+      <div class="avatar av-bot">AF</div>
+      <div>
+        <div class="intro-card">
+          <div class="hero-name">AKILAN <span>MANIVANNAN</span></div>
+          <div class="hero-role">AI Researcher · ML Engineer · MS in AI @ LIU Brooklyn, New York</div>
+          <div class="tags">
+            <span class="tag">Deep Learning</span>
+            <span class="tag">LLM</span>
+            <span class="tag">RAG</span>
+            <span class="tag">Generative AI</span>
+            <span class="tag">LSTM</span>
+            <span class="tag">CNN</span>
+            <span class="tag">Healthcare AI</span>
+            <span class="tag">Computer Vision</span>
+            <span class="tag">LangChain</span>
+            <span class="tag">NLP</span>
+            <span class="tag">Python</span>
+            <span class="tag">FastAPI</span>
+            <span class="tag">Stock Forecasting</span>
+          </div>
+          <div class="links-row">
+            <a href="https://www.linkedin.com/in/akilan-manivannan-a178212a7/" target="_blank" class="lp">
+              <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+              LinkedIn
+            </a>
+            <a href="https://github.com/AkilanManivannanak" target="_blank" class="lp">
+              <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+        <div class="suggestions" style="margin-top:11px;">
+          <button class="chip" onclick="sendChip(this)">🧠 Tell me about your AI projects</button>
+          <button class="chip" onclick="sendChip(this)">🎓 Your education background?</button>
+          <button class="chip" onclick="sendChip(this)">⚙️ What skills do you have?</button>
+          <button class="chip" onclick="sendChip(this)">📊 What's your best project?</button>
+          <button class="chip" onclick="sendChip(this)">🤝 How can I contact you?</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="input-area">
+    <div class="input-bar">
+      <input type="text" id="userInput" placeholder="Ask me anything about Akilan..." onkeydown="if(event.key==='Enter' && !event.shiftKey) sendMessage()">
+      <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+        <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+      </button>
+    </div>
+    <div class="footer-text">Akilan Manivannan <span>✦</span> Assistant</div>
+  </div>
+</div>
+
+<script>
+// ── Knowledge base (answers without API if needed) ──
+const KB = {
+  projects: `<strong>Akilan's Projects on GitHub:</strong><br><br>
+• <strong><a href="https://github.com/AkilanManivannanak/stock-forecasting-aapl-LSTM-RAG" target="_blank">Stock Forecasting System (AAPL) — LSTM + RAG Copilot</a></strong> — Production-style time-series forecasting pipeline with LSTM (Keras/TensorFlow), FastAPI serving, and a strictly-grounded RAG copilot (ChromaDB + LangChain + Ollama llama3.1)<br>
+• <strong><a href="https://github.com/AkilanManivannanak/two-stage-recommender-als-ranker-api" target="_blank">Two-Stage Recommender: ALS → LambdaRank Reranker (Netflix-Inspired)</a></strong> — Hybrid pipeline: Implicit ALS for high-recall candidate generation (top 200 items) → LightGBM LambdaRank reranker with dense side-features (demographics, temporal context) to optimize NDCG & MRR. Metaflow-orchestrated end-to-end containerized DAG for ETL, feature engineering & training with automated state management. CI/CD gating via GitHub Actions strictly enforces Recall@K and NDCG thresholds before any artifact reaches production<br>
+• <strong><a href="https://github.com/AkilanManivannanak/ASL-Alphabet-Recognition_A-Z_-Real-Time-Webcam-CNN" target="_blank">ASL Alphabet Recognition A–Z (Real-Time CNN)</a></strong> — Custom CNN for fingerspelling A–Z with real-time OpenCV webcam overlay, confidence scores, and exportable artifacts<br>
+• <strong><a href="https://github.com/AkilanManivannanak/guardian-drive" target="_blank">GuardianDrive — Stress Detection (WESAD Signals)</a></strong> — 1D CNN on chest ECG/EDA/Resp/Temp signals with LOSO holdout, Signal Quality Index gating, noise robustness tests, and latency benchmarks<br>
+• <strong><a href="https://github.com/AkilanManivannanak/noise-robust-kws-distress-detection" target="_blank">Noise-Robust Keyword Spotting for Distress Detection</a></strong> — End-to-end KWS pipeline with log-Mel + MFCC features, SpecAugment, SNR bucket evaluation (clean/20dB/10dB/0dB)<br>
+• <strong><a href="https://github.com/AkilanManivannanak/AI-Powered-Multi-Disease-Health-Risk-Prediction" target="_blank">Multi-Disease Health Risk Prediction (17 Conditions)</a></strong> — Random Forest for tabular data + CNN (EfficientNetB0) for chest X-rays, SHAP explainability, radar chart, clinician-style risk report<br>
+• <strong><a href="https://github.com/AkilanManivannanak/Pharmacy-management-system" target="_blank">Pharmacy Management System — SQLite CLI + FastAPI</a></strong> — Menu-driven CLI + REST API with Swagger/OpenAPI docs for pharmacy inventory, sales, prescriptions<br>
+• <strong><a href="https://github.com/AkilanManivannanak/Library-Management-System-in-Python" target="_blank">Library Management System — CLI + SQLite</a></strong> — Lightweight command-line library system in pure Python + SQLite managing book inventory with multiple copies, borrowers, and full loan lifecycle (issue → due-date tracking → return). Features overdue detection, late-fee calculation ($0.50/day default), and quick reporting for active loans, overdue loans, and borrower history`,
+
+  education: `<strong>Akilan's Education:</strong><br><br>
+🎓 <strong>Master of Science in Artificial Intelligence</strong><br>Long Island University (LIU) Brooklyn, New York — <em>Currently Enrolled</em><br><br>
+🎓 <strong>Bachelor of Engineering in Computer Science</strong><br>Panimalar Engineering College, Chennai, India<br><br>
+🎓 <strong>Diploma in Computer Science</strong><br>Panimalar Polytechnic College, Chennai, India<br><br>
+His academic journey spans from foundational CS to cutting-edge AI — focused on <strong>Deep Learning, Healthcare AI, Computer Vision, and NLP</strong>, translating research into real-world production-grade systems.`,
+
+  skills: `<strong>Akilan's Technical Skills:</strong><br><br>
+<strong>Languages:</strong> Python<br>
+<strong>AI / LLM:</strong> LLM, RAG, Generative AI, LLaMA 3, LangChain, ChromaDB, Ollama, SentenceTransformers, Hugging Face<br>
+<strong>Deep Learning:</strong> TensorFlow, Keras, PyTorch, CNN, LSTM, Neural Networks<br>
+<strong>ML & Data:</strong> Scikit-learn, NumPy, Pandas, SciPy, Matplotlib, Plotly, Jupyter Notebook, Collaborative Filtering<br>
+<strong>Computer Vision:</strong> OpenCV, Real-time recognition<br>
+<strong>MLOps & Serving:</strong> FastAPI, Docker, Metaflow, MLflow, Weights & Biases, Pytest, Git, GitHub<br>
+<strong>Backend:</strong> Node.js<br>
+<strong>Vector Databases:</strong> ChromaDB, Vector DB`,
+
+  best: `<strong>Top Projects — Akilan's Best Work:</strong><br><br>
+🏆 <strong><a href="https://github.com/AkilanManivannanak/stock-forecasting-aapl-LSTM-RAG" target="_blank">Stock Forecasting AAPL — LSTM + RAG Copilot</a></strong><br>
+Production-style pipeline: LSTM for time-series forecasting + a strictly-grounded RAG copilot (ChromaDB + LangChain + Ollama llama3.1) that only answers from indexed docs. Served via FastAPI with a metrics leaderboard and experiment reports.<br><br>
+🏆 <strong><a href="https://github.com/AkilanManivannanak/two-stage-recommender-als-ranker-api" target="_blank">Two-Stage Recommender: ALS → LambdaRank (Netflix-Inspired)</a></strong><br>
+Hybrid pipeline: Implicit ALS generates top-200 high-recall candidates → LightGBM LambdaRank reranker with dense side-features (demographics, temporal context) optimizes NDCG & MRR for top-tier personalization at scale. Metaflow-orchestrated containerized DAG handles ETL, feature engineering, and training with automated state management & versioning. CI/CD gating via GitHub Actions enforces statistically significant Recall@K and NDCG thresholds — only high-performing, reproducible artifacts reach production.<br><br>
+🏆 <strong><a href="https://github.com/AkilanManivannanak/guardian-drive" target="_blank">GuardianDrive — Stress Detection</a></strong><br>
+1D CNN on WESAD chest signals (ECG/EDA/Resp/Temp) with LOSO holdout, SQI gating, noise robustness, and p50/p95 latency benchmarks — built for real-world deployability.<br><br>
+View all projects → <a href="https://github.com/AkilanManivannanak" target="_blank">github.com/AkilanManivannanak</a>`,
+
+  contact: `<strong>Get in Touch with Akilan:</strong><br><br>
+📧 <strong>Email:</strong> <a href="mailto:ak.akilan.smart22@gmail.com">ak.akilan.smart22@gmail.com</a><br>
+📞 <strong>Phone:</strong> <a href="tel:+13472217162">+1 347 221 7162</a><br>
+📌 <strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/akilan-manivannan-a178212a7/" target="_blank">linkedin.com/in/akilan-manivannan-a178212a7</a><br>
+💻 <strong>GitHub:</strong> <a href="https://github.com/AkilanManivannanak" target="_blank">github.com/AkilanManivannanak</a><br>
+📍 <strong>Location:</strong> Brooklyn, New York<br><br>
+Akilan is open to <strong>research collaborations, ML engineering roles, and AI/GenAI projects</strong> — especially in Healthcare AI, LLM/RAG systems, and Computer Vision.`
+};
+
+// ── Smart local responder (no API needed) ──
+function localAnswer(q) {
+  const ql = q.toLowerCase();
+  if (/project|build|work|github|repo|code|develop/i.test(ql)) return KB.projects;
+  if (/educat|school|univers|degree|study|student|liu|brooklyn|master|bachelor|diploma|panimalar/i.test(ql)) return KB.education;
+  if (/skill|tech|language|tool|know|familiar|stack|framework/i.test(ql)) return KB.skills;
+  if (/best|top|favorite|impressive|highlight|strongest|standout/i.test(ql)) return KB.best;
+  if (/contact|reach|email|phone|number|connect|hire|message|touch/i.test(ql)) return KB.contact;
+  if (/who|about|akilan|yourself|introduce|tell me/i.test(ql)) return `<strong>Akilan Manivannan</strong> is an <strong>AI Researcher & ML Engineer</strong> currently pursuing his <strong>Master's in AI at LIU Brooklyn</strong>, New York.<br><br>He specializes in <strong>LLM/RAG systems, Deep Learning (LSTM, CNN), Computer Vision, GenAI, and Healthcare AI</strong> — with production-grade projects on GitHub spanning stock forecasting, stress detection, recommender systems, sign language recognition, and multi-disease prediction.<br><br>His mission: building AI systems that are robust, explainable, and make a real-world difference.`;
+  if (/lstm/i.test(ql)) return `<strong>LSTM (Long Short-Term Memory)</strong> is one of Akilan's core specializations.<br><br>He applied LSTM in the <strong>Stock Forecasting AAPL</strong> project — a production-style pipeline with chronological train/val/test splits, FastAPI serving, and a RAG copilot (ChromaDB + LangChain + Ollama). The pipeline exports a metrics leaderboard, training plots, and an experiment report.<br><br>LSTM excels at capturing long-range sequential dependencies, making it ideal for time-series financial data.`;
+  if (/rag|langchain|chroma|ollama|llm|genai|gen ai|llama/i.test(ql)) return `<strong>RAG & LLM/GenAI</strong> are among Akilan's strongest areas:<br><br>• <strong>Stock Forecasting RAG Copilot</strong> — Strictly-grounded RAG using ChromaDB vector store + SentenceTransformers + Ollama (llama3.1). Returns "Not found in docs." when info isn't present — no hallucinations.<br>• Skilled in <strong>LangChain, ChromaDB, Ollama, Hugging Face, SentenceTransformers, LLaMA 3</strong><br>• Experience with <strong>Vector DBs, Generative AI pipelines, and embedding-based retrieval</strong><br><br>Akilan builds RAG systems that are grounded, auditable, and production-ready.`;
+  if (/cnn|computer vision|image|asl|sign/i.test(ql)) return `<strong>CNN & Computer Vision</strong> work by Akilan:<br><br>• <strong>ASL Alphabet Recognition A–Z</strong> — Custom CNN with real-time OpenCV webcam overlay, augmentation, early stopping, LR scheduling, and exportable artifacts (best model, label encoder, confusion matrix)<br>• <strong>Multi-Disease Health Prediction</strong> — EfficientNetB0 + custom CNN for pneumonia & tuberculosis chest X-rays<br>• <strong>GuardianDrive</strong> — 1D CNN for stress detection on physiological signals<br><br>Real-time, deployable, and production-benchmarked.`;
+  if (/healthcare|health|medical|disease|guardian|stress/i.test(ql)) return `<strong>Healthcare AI</strong> is one of Akilan's primary passions:<br><br>• <strong>Multi-Disease Health Risk Prediction (17 conditions)</strong> — Random Forest for tabular clinical data + CNN for chest X-rays, SHAP explainability, radar chart, clinician-style 3–5 year risk report<br>• <strong>GuardianDrive</strong> — Stress/non-stress detection on WESAD ECG/EDA/Resp/Temp signals with LOSO holdout and SQI gating for real-world deployability<br>• <strong>Heart Disease Prediction</strong> — Linear regression cardiac risk model<br><br>Goal: AI that is explainable, robust, and clinically useful.`;
+  if (/recommend|als|netflix|lightgbm|lambdarank/i.test(ql)) return `<strong>Two-Stage Recommender: ALS → LambdaRank Reranker (Netflix-Inspired)</strong><br><br>
+<strong>Architecture:</strong><br>
+• <strong>Stage 1 — Candidate Generation:</strong> Implicit ALS generates top-200 high-recall candidates per user<br>
+• <strong>Stage 2 — Reranking:</strong> LightGBM LambdaRank with dense side-features (demographics, temporal context) optimizes NDCG & MRR for precision personalization at scale<br><br>
+<strong>Metaflow Orchestration:</strong> End-to-end containerized DAG for ETL, feature engineering, and model training — with automated state management and artifact versioning<br><br>
+<strong>CI/CD Gating (GitHub Actions):</strong> Automated validation suite compares candidate models against production baselines using statistically significant thresholds. Only artifacts meeting strict Recall@K and NDCG improvements are promoted to production — zero regressions tolerated<br><br>
+<strong>Metrics:</strong> NDCG@10 · MRR@10 · Recall@10/50 · Coverage@10<br><br>
+<a href="https://github.com/AkilanManivannanak/two-stage-recommender-als-ranker-api" target="_blank">View on GitHub →</a>`;
+  if (/keyword|kws|distress|noise|snr|audio/i.test(ql)) return `<strong>Noise-Robust Keyword Spotting for Distress Detection:</strong><br><br>End-to-end pipeline for detecting emergency/distress intent in real-world noisy audio (streets, vehicles, crowds).<br><br>• <strong>Features:</strong> log-Mel spectrograms + MFCC extraction<br>• <strong>Robustness:</strong> noise mixing + SpecAugment training<br>• <strong>Evaluation:</strong> SNR bucket tests — clean / 20dB / 10dB / 0dB<br>• <strong>Deployability:</strong> model size + p95 latency stats<br><br><a href="https://github.com/AkilanManivannanak/noise-robust-kws-distress-detection" target="_blank">View on GitHub →</a>`;
+  return null;
+}
+
+let history = [];
+let busy = false;
+let currentUtterance = null;
+let speakingBtn = null;
+
+function msgs() { return document.getElementById('messages'); }
+
+// Strip HTML tags for clean TTS text
+function stripHtml(html) {
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html;
+  return tmp.textContent || tmp.innerText || '';
+}
+
+function stopSpeaking() {
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
+  if (speakingBtn) {
+    speakingBtn.classList.remove('speaking');
+    speakingBtn.querySelector('.voice-label').textContent = '▶ LISTEN';
+    speakingBtn = null;
+  }
+}
+
+function speakText(text, btn) {
+  if (!window.speechSynthesis) {
+    alert('Sorry, your browser does not support text-to-speech.');
+    return;
+  }
+
+  // If already speaking this button, stop
+  if (speakingBtn === btn) { stopSpeaking(); return; }
+
+  // Stop any current speech
+  stopSpeaking();
+
+  const clean = stripHtml(text);
+  const utter = new SpeechSynthesisUtterance(clean);
+
+  // Pick a good voice — prefer a natural English voice
+  const voices = window.speechSynthesis.getVoices();
+  const preferred = voices.find(v =>
+    /en[-_](US|GB|AU)/i.test(v.lang) && /natural|samantha|google|daniel|karen/i.test(v.name)
+  ) || voices.find(v => /en/i.test(v.lang)) || voices[0];
+  if (preferred) utter.voice = preferred;
+
+  utter.rate  = 0.95;
+  utter.pitch = 1.0;
+  utter.lang  = 'en-US';
+
+  utter.onstart = () => {
+    speakingBtn = btn;
+    btn.classList.add('speaking');
+    btn.querySelector('.voice-label').textContent = '■ STOP';
+  };
+  utter.onend = utter.onerror = () => {
+    btn.classList.remove('speaking');
+    btn.querySelector('.voice-label').textContent = '▶ LISTEN';
+    if (speakingBtn === btn) speakingBtn = null;
+  };
+
+  currentUtterance = utter;
+  window.speechSynthesis.speak(utter);
+}
+
+function addMsg(role, html) {
+  const d = document.createElement('div');
+  d.className = `msg ${role}`;
+  const isBot = role === 'bot';
+
+  let voiceBtn = '';
+  if (isBot) {
+    voiceBtn = `
+      <button class="voice-btn" onclick="speakText(this.dataset.text, this)" data-text="${html.replace(/"/g, '&quot;')}">
+        <span class="voice-icon">
+          <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+        </span>
+        <span class="wave-bars">
+          <span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span>
+        </span>
+        <span class="voice-label">▶ LISTEN</span>
+      </button>`;
+  }
+
+  d.innerHTML = `
+    <div class="avatar ${isBot ? 'av-bot' : 'av-user'}">${isBot ? 'AF' : 'YOU'}</div>
+    <div>
+      <div class="bubble ${role}">${html}</div>
+      ${voiceBtn}
+    </div>`;
+  msgs().appendChild(d);
+  msgs().scrollTop = msgs().scrollHeight;
+
+  // Auto-speak bot messages
+  if (isBot) {
+    // Small delay to let voices load
+    setTimeout(() => {
+      const btn = d.querySelector('.voice-btn');
+      if (btn) speakText(btn.dataset.text, btn);
+    }, 300);
+  }
+}
+
+function showTyping() {
+  const d = document.createElement('div');
+  d.id = 'typing';
+  d.className = 'typing-wrap';
+  d.innerHTML = `
+    <div class="avatar av-bot">AF</div>
+    <div class="typing-bubble"><div class="td"></div><div class="td"></div><div class="td"></div></div>`;
+  msgs().appendChild(d);
+  msgs().scrollTop = msgs().scrollHeight;
+}
+
+function hideTyping() {
+  const t = document.getElementById('typing');
+  if (t) t.remove();
+}
+
+async function sendMessage(text) {
+  if (busy) return;
+  stopSpeaking(); // stop any ongoing speech when user asks something new
+  const input = document.getElementById('userInput');
+  const msg = text || input.value.trim();
+  if (!msg) return;
+
+  input.value = '';
+  busy = true;
+  document.getElementById('sendBtn').disabled = true;
+
+  addMsg('user', msg);
+  showTyping();
+
+  // Try local answer first (instant)
+  const local = localAnswer(msg);
+  if (local) {
+    await new Promise(r => setTimeout(r, 700)); // small delay for realism
+    hideTyping();
+    addMsg('bot', local);
+    history.push({ role: 'user', content: msg });
+    history.push({ role: 'assistant', content: local });
+    busy = false;
+    document.getElementById('sendBtn').disabled = false;
+    return;
+  }
+
+  // Try Anthropic API
+  history.push({ role: 'user', content: msg });
+
+  const SYSTEM = `You are Akilan Manivannan's personalized AI portfolio assistant called "AkilanFlix Assistant". Answer questions about Akilan professionally and concisely.
+
+ABOUT AKILAN:
+- Name: Akilan Manivannan
+- Role: AI Researcher & ML Engineer
+- Education: MS in AI at LIU Brooklyn (current) | BE Computer Science at Panimalar Engineering College | Diploma CS at Panimalar Polytechnic College
+- Email: ak.akilan.smart22@gmail.com | Phone: +1 347 221 7162
+- LinkedIn: https://www.linkedin.com/in/akilan-manivannan-a178212a7/
+- GitHub: https://github.com/AkilanManivannanak
+
+KEY PROJECTS:
+1. Stock Forecasting AAPL — LSTM + strictly-grounded RAG Copilot (ChromaDB + LangChain + Ollama llama3.1), FastAPI serving
+2. Two-Stage Recommender (Netflix-Inspired): Implicit ALS → top-200 candidates → LightGBM LambdaRank reranker with dense side-features (demographics, temporal context) for NDCG/MRR optimization. Metaflow-orchestrated containerized DAG for ETL/feature engineering/training with automated versioning. CI/CD GitHub Actions gating enforces statistically significant Recall@K and NDCG thresholds before production deployment.
+3. ASL Alphabet Recognition A-Z — Real-time CNN + OpenCV webcam, augmentation, early stopping
+4. GuardianDrive — 1D CNN on WESAD chest signals (ECG/EDA/Resp/Temp), LOSO holdout, SQI gating, latency benchmarks
+5. Noise-Robust KWS Distress Detection — log-Mel+MFCC, SpecAugment, SNR bucket evaluation (0/10/20dB)
+6. Multi-Disease Health Risk Prediction (17 conditions) — Random Forest + EfficientNetB0, SHAP explainability, radar chart
+7. Pharmacy Management System — SQLite CLI + FastAPI REST API
+8. Library Management System — Pure Python + SQLite CLI: book inventory with multiple copies, borrowers, full loan lifecycle (issue → due-date tracking → return), overdue detection, late-fee calculation ($0.50/day), active/overdue loan reports and borrower history
+
+SKILLS: Python, LLM, RAG, Generative AI, LLaMA 3, LangChain, ChromaDB, Ollama, SentenceTransformers, Hugging Face, TensorFlow, Keras, PyTorch, CNN, LSTM, Scikit-learn, NumPy, Pandas, SciPy, Matplotlib, Plotly, OpenCV, FastAPI, Docker, Metaflow, MLflow, Weights & Biases, Pytest, Git, GitHub, Node.js, Vector DB
+
+RESPONSE FORMAT: Use <strong> for emphasis, <br> for line breaks. Keep answers 2-4 short paragraphs. Be confident and cinematic.`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 500,
+        system: SYSTEM,
+        messages: history
+      })
+    });
+
+    if (!res.ok) throw new Error('API error');
+    const data = await res.json();
+    const reply = data.content?.[0]?.text || '';
+    if (!reply) throw new Error('Empty');
+
+    history.push({ role: 'assistant', content: reply });
+    hideTyping();
+    addMsg('bot', reply.replace(/\n/g, '<br>'));
+
+  } catch(e) {
+    // Fallback: smart generic reply
+    hideTyping();
+    history.pop(); // remove failed message
+    addMsg('bot', `I'd love to tell you more about that! You can explore Akilan's full portfolio at:<br><br>
+• 💼 <a href="https://www.linkedin.com/in/akilan-manivannan-a178212a7/" target="_blank">LinkedIn Profile</a><br>
+• 💻 <a href="https://github.com/AkilanManivannanak" target="_blank">GitHub — 16 Projects</a><br><br>
+Try asking me about his <strong>projects, skills, education, or how to contact him</strong>!`);
+  }
+
+  busy = false;
+  document.getElementById('sendBtn').disabled = false;
+}
+
+function sendChip(el) {
+  sendMessage(el.textContent.trim());
+}
+
+// Preload voices (required in some browsers)
+if (window.speechSynthesis) {
+  window.speechSynthesis.getVoices();
+  window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100" height="100" rx="12" fill="none"/>
+  <text x="50" y="45" text-anchor="middle" font-family="Arial Black,sans-serif" font-weight="900" font-size="22" fill="white">GCP</text>
+  <text x="50" y="68" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#7FFFD4">GOOGLE</text>
+</svg>

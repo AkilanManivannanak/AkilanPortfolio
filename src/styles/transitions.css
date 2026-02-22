@@ -1,0 +1,144 @@
+/* Fade transition */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.1s linear;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.fade-scale-enter-active,
+.fade-scale-leave-active {
+  transition: opacity 0.1s linear, transform 0.1s linear;
+}
+
+.fade-scale-enter,
+.fade-scale-leave-to {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+.fade-descale-enter-active,
+.fade-descale-leave-active {
+  transition: opacity 0.3s linear, transform 0.3s linear;
+}
+
+.fade-descale-enter,
+.fade-descale-leave-to {
+  opacity: 0;
+  transform: scale(1.1);
+}
+
+/* Slide transition */
+
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes bounce-out {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+}
+
+.bounce-enter-active {
+  transition: opacity 0.5s, transform 0.5s;
+  .to-animate {
+    animation: bounce-in 0.5s;
+  }
+}
+.bounce-leave-active {
+  transition: opacity 0.2s, transform 0.2s;
+  .to-animate {
+    animation: bounce-out 0.2s;
+  }
+}
+
+.bounce-enter,
+.bounce-leave-to {
+  opacity: 0;
+}
+
+/* pages transition */
+
+/* Default */
+
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 0.15s;
+}
+
+.page-enter {
+  opacity: 0;
+}
+
+.page-leave-to {
+  opacity: 0;
+}
+
+/* layout */
+
+.layout-enter-active,
+.layout-leave-active {
+  position: absolute;
+  width: 100%;
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.layout-enter {
+  opacity: 0;
+}
+
+.layout-leave-to {
+  transform: scale(1.05);
+  opacity: 0;
+}
+
+/* Slide */
+
+.slide-left-enter-active,
+.slide-left-leave-active,
+.slide-right-enter-active,
+.slide-right-leave-active,
+.slide-top-enter-active,
+.slide-top-leave-active,
+.slide-bottom-enter-active,
+.slide-bottom-leave-active {
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.slide-left-enter,
+.slide-right-leave-active {
+  opacity: 0;
+  transform: translate3d(100%, 0, 0);
+}
+.slide-left-leave-active,
+.slide-right-enter {
+  opacity: 0;
+  transform: translate3d(100%, 0, 0);
+}
+
+.slide-bottom-enter,
+.slide-top-leave-active {
+  opacity: 0;
+  transform: translate3d(0, -100%, 0);
+}
+.slide-bottom-leave-active,
+.slide-top-enter {
+  opacity: 0;
+  transform: translate3d(0, 100%, 0);
+}
