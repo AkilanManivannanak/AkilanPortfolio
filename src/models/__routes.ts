@@ -1,6 +1,9 @@
 export const routerPagesNames = {
   search: 'search',
-  index: 'undefined',
+  watch: {
+    index: 'watch',
+    id: 'watch-id',
+  },
   index: {
     index: 'index',
     about: 'index-about',
